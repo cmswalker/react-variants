@@ -4,6 +4,10 @@ declare global {
   interface Function {
     name: string;
   }
+
+  interface ObjectConstructor {
+    assign(...objects: Object[]): Object;
+  }
 }
 
 export type IVariants = {
@@ -32,6 +36,7 @@ export interface IVariantState extends InternalState, IVariantCombined {
 
 export interface IVariantProps extends IVariantState {
   displayName: string;
+  render?: Function;
 };
 
 export type DefaultVariantComponent = IVariantsProps & React.ComponentType;
