@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDom from 'react-dom';
 
 import { IVariantProps } from '../../src/types';
+import Shared from '../Shared';
 
 const style = {
   backgroundColor: 'turquoise'
@@ -9,7 +10,10 @@ const style = {
 
 class UserProfile1 extends React.Component<IVariantProps> {
   render() {
-    return <div style={style}>DisplayName: {this.props.displayName} Variant: {this.props.variant}</div>
+    const { displayName, variant } = this.props;
+    const templateProps = { style, displayName, variant };
+    // @ts-ignore
+    return <Shared {...templateProps} />
   }
 }
 

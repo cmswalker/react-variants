@@ -34,7 +34,7 @@ export function WithVariants(defaultVariant: DefaultVariantComponent): React.Com
 
       const { variant } = props;
 
-      if (isNull(variant) || isUndefined(variant) || isNaN(variant)) {
+      if (((isNull(variant) || isUndefined(variant) || isNaN(variant)) && !isFunc(props.render))) {
         throw new Error('Must provide variant prop to ' + displayName);
       }
 
@@ -55,15 +55,22 @@ export function WithVariants(defaultVariant: DefaultVariantComponent): React.Com
     }
 
     render() {
-      const { state } = this;
+      const { state, props } = this;
       const { variant, variants } = state;
+
+      const VariantComponent : React.ComponentType<any> = variants[variant];
 
       if (isFunc(this.props.render)) {
         renderCount++;
-        return this.props.render({ ...this.state, renderVariant: renderCount });
-      }
+        const propClone = Object.assign({}, this.props, { renderCount })
+        const thisClone = Object.assign({}, this, { props: propClone });
 
-      const VariantComponent: React.ComponentType<any> = variants[variant];
+        if (isFunc(VariantComponent)) {
+          return <VariantComponent render={this.props.render.bind(thisClone)} />;
+        }
+
+        return this.props.render(thisClone);
+      }
 
       if (!isFunc(VariantComponent)) {
         throw new Error(`No variant # ${variant} exists for ${displayName}, check your config`);
