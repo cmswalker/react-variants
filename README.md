@@ -52,7 +52,6 @@ By passing a component to `WithVariants` you get an HOC wrapper back that passes
 
 ```js
 /**
- * @param {...Object} state - Any changes to state will be passed through
  * @param {...Object} props - The original user-defined Props will be passed through
  * @param {Number} props.variant - The assigned variant number
  * @param {Object} props.variants - Reference to all known variants
@@ -60,7 +59,6 @@ By passing a component to `WithVariants` you get an HOC wrapper back that passes
  * @param {Boolean} props.isRenderProp - True if the variant is a render prop
  * @param {Boolean} props.isStaticVariant - True if the variant is a static variant
  * @param {Number} props.staticVariantCount - Total Count of all running static variants
- * @param {Number} props.variantRenderCount - Total number of times the variant has rendered
  */
 ```
 
@@ -130,10 +128,9 @@ By passing a component to `WithRenderProps` you get an HOC wrapper back that pas
  * @param {...Object} state - Current state that will change based on the behaviour of the default variant
  * @param {...Object} props - The original user-defined Props will be passed through
  * @param {Number} props.variant - The assigned variant number
- * @param {Number} props.variantCount - Total Count of all running  variants
+ * @param {Number} props.renderVariantCount - Total Count of all running render variants
  * @param {Boolean} props.isDefault - True if the variant is variant 0
  * @param {Boolean} props.isRenderProp - True if the variant is a render prop
- * @param {Number} props.totalRenderCount - Total number of times all variants have rendered
  */
 ```
 

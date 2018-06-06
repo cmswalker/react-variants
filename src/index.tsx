@@ -14,24 +14,22 @@ const withVariantsError = (displayName : string, msg: string) : Error => new Err
 
 export function WithRenderProps(DefaultVariant: React.ComponentType): React.ComponentClass<any> {
   const displayName = getDisplayName(DefaultVariant);
-  let totalRenderCount = 0;
-  let variantCount = 0;
+  let renderVariantCount = 0;
 
   return class RenderWrapper extends React.Component<any, any> {
     constructor(props: any) {
       super(props);
-      variantCount++;
+      renderVariantCount++;
     }
 
     render() {
       const topProps = this.props;
-      const { render: topRender, variant } = topProps;
+      const { render: topRender, variant = 0} = topProps;
       const isRenderProp = isFunc(topRender);
       const isDefault = !variant;
 
       if (isDefault) {
-        totalRenderCount++;
-        const newProps = { ...topProps, variantCount, isDefault, totalRenderCount, isRenderProp, displayName };
+        const newProps = { ...topProps, variant, renderVariantCount, isDefault, isRenderProp, displayName };
         return <DefaultVariant {...newProps}  />
       }
 
@@ -39,9 +37,7 @@ export function WithRenderProps(DefaultVariant: React.ComponentType): React.Comp
         // @ts-ignore
         class RenderProp extends DefaultVariant<any, any> {
           render() {
-            totalRenderCount++;
-
-            const newProps = { ...topProps, variantCount, isDefault, totalRenderCount, isRenderProp, displayName };
+            const newProps = { ...topProps, variant, renderVariantCount, isDefault, isRenderProp, displayName };
             // @ts-ignore
             this.props = newProps;
             return topRender(this);
@@ -72,8 +68,7 @@ export function WithVariants(defaultVariant: DefaultVariantComponent): React.Com
   }
 
   // static variants count only
-  let staticVariantCount = Object.keys(variants).length;
-  let totalRenderCount = staticVariantCount;
+  const staticVariantCount = Object.keys(variants).length;
 
   return class VariantWrapper extends React.Component<IVariantProps, IVariantState> {
     constructor(props: IVariantProps) {
@@ -95,21 +90,10 @@ export function WithVariants(defaultVariant: DefaultVariantComponent): React.Com
         displayName,
         variants: { ...variants },
         isDefault: variant === 0,
-        staticVariantCount,
-        variantRenderCount: 1,
-        totalRenderCount: 0
+        staticVariantCount
       };
 
       this.state = initialState;
-    }
-
-    componentWillReceiveProps() {
-      totalRenderCount++;
-
-      this.setState({
-        totalRenderCount,
-        variantRenderCount: this.state.variantRenderCount + 1
-      });
     }
 
     render() {
@@ -126,8 +110,6 @@ export function WithVariants(defaultVariant: DefaultVariantComponent): React.Com
       const combinedProps = { ...state, ...props, displayName: name };
 
       if (isRenderProp) {
-        // @ts-ignore
-        combinedProps.totalRenderCount = combinedProps.totalRenderCount + 1;
         return props.render(combinedProps);
       }
 
