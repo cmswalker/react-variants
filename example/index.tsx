@@ -8,11 +8,13 @@ import { ExampleComponent, MyStatefulComponent } from './exampleComponents';
 import ExampleComponent1 from './variants/1';
 import ExampleComponent2 from './variants/2';
 
+// @ts-ignore
 ExampleComponent.variants = {
   1: ExampleComponent1,
   2: ExampleComponent2
 }
 
+// @ts-ignore
 const ExampleComponentWithVariants: React.ComponentType<any> = WithVariants(ExampleComponent);
 const MyStatefulComponentWithRenderProps: React.ComponentType<any> = WithRenderProps(MyStatefulComponent);
 

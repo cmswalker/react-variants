@@ -9,8 +9,8 @@ const style = {
 
 class ExampleComponent1 extends React.Component<ExampleComponentProps> {
   render() {
-    const { displayName, variant, time, variantRenderCount } = this.props;
-    return <div style={style}>DisplayName: {displayName} Variant: {variant} Time: {time} Variant Render Count: {variantRenderCount}</div>
+    const { displayName, variant } = this.props;
+    return <div style={style}>DisplayName: {displayName} Variant: {variant}</div>
   }
 }
 

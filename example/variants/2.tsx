@@ -7,8 +7,8 @@ const style = {
   backgroundColor: 'cornsilk'
 };
 
-const ExampleComponent2: React.SFC<ExampleComponentProps> = ({ displayName, variant, time, variantRenderCount}) => {
-  return <div style={style}>DisplayName: {displayName} Variant: {variant} Time: {time} Variant Render Count: {variantRenderCount}</div>
+const ExampleComponent2: React.SFC<ExampleComponentProps> = ({ displayName, variant }) => {
+  return <div style={style}>DisplayName: {displayName} Variant: {variant}</div>
 };
 
 export default ExampleComponent2;

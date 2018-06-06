@@ -11,8 +11,8 @@ export class ExampleComponent extends React.Component<ExampleComponentProps, any
   static variants: IVariants = { };
 
   public render() {
-    const {displayName, variant, time, totalRenderCount, variantRenderCount} = this.props;
-    return <div style={{backgroundColor: 'coral'}}>DisplayName: {displayName} Variant: {variant} Time: {time} Variant Render Count: {variantRenderCount} All Variants Render Count: {totalRenderCount}</div>
+    const { displayName, variant, staticVariantCount } = this.props;
+    return <div style={{ backgroundColor: 'coral' }}>DisplayName: {displayName} Variant: {variant} Static Variant Count: {staticVariantCount}</div>
   }
 }
 

@@ -29,10 +29,8 @@ exports[`WithVariants 1`] = `
     ExampleComponent
      Variant: 
     0
-     Time: 
-    20
-     Variant Render Count: 
-     All Variants Render Count: 
+     Static Variant Count: 
+    3
   </div>
   <div
     style={
@@ -45,9 +43,6 @@ exports[`WithVariants 1`] = `
     ExampleComponent1
      Variant: 
     1
-     Time: 
-    20
-     Variant Render Count: 
   </div>
   <div
     style={
@@ -60,9 +55,6 @@ exports[`WithVariants 1`] = `
     ExampleComponent2
      Variant: 
     2
-     Time: 
-    20
-     Variant Render Count: 
   </div>
   <div />
 </div>
