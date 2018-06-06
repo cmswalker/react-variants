@@ -39,7 +39,7 @@ test('WithVariants', () => {
       <ExampleComponentWithVariants variant={1} time={time} />
       <ExampleComponentWithVariants variant={2} time={time} />
       <ExampleComponentWithVariants variant={3} time={time}
-        render={({ time, displayName, variant, staticVariantCount, isDefault, isRenderProp, isStaticVariant, totalRenderCount, variantRenderCount }) => {
+        render={({ time, displayName, variant, staticVariantCount, isDefault, isRenderProp, isStaticVariant, totalRenderCount }) => {
           expect(time).toBe(20);
           expect(displayName).toBe('ExampleComponentAsRenderProp');
           expect(variant).toBe(3);
@@ -47,7 +47,6 @@ test('WithVariants', () => {
           expect(isDefault).toBe(false);
           expect(isRenderProp).toBe(true);
           expect(isStaticVariant).toBe(false);
-          expect(variantRenderCount).toBe(1);
           return <div></div>;
       }} />
     </div>
@@ -67,11 +66,10 @@ test('WithRenderProps', () => {
       <MyStatefulComponentWithRenderProps variant={1} render={({props, state}) => {
         // Preserve original comp state
         expect(state.date).toBe('5/2 4:20');
-
         expect(props.variant).toBe(1);
-        expect(props.variantCount).toBe(2);
+        expect(props.renderVariantCount).toBe(2);
         expect(props.isDefault).toBe(false);
-        expect(props.totalRenderCount).toBe(2);
+        expect(props.renderVariantCount).toBe(2);
         expect(props.isRenderProp).toBe(true);
         return <div></div>;
       }}/>
