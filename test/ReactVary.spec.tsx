@@ -11,7 +11,7 @@ ExampleComponent.variants = {
   2: ExampleComponent2
 }
 const ExampleComponentWithVariants : React.ComponentType<any> = WithVariants(ExampleComponent);
-const MyStatefulComponentWithRenderProps : React.ComponentType <any> = WithRenderProps(MyStatefulComponent);
+const MyStatefulComponentWithRenderProps : React.ComponentType<any> = WithVariants(MyStatefulComponent);
 
 const getTime = () => new Date().getSeconds();
 
@@ -29,7 +29,7 @@ beforeAll(() => {
 
 afterAll(() => {
 
-})
+});
 
 test('WithVariants', () => {
   const time = getTime();
@@ -39,16 +39,42 @@ test('WithVariants', () => {
       <ExampleComponentWithVariants variant={1} time={time} />
       <ExampleComponentWithVariants variant={2} time={time} />
       <ExampleComponentWithVariants variant={3} time={time}
-        render={({ time, displayName, variant, staticVariantCount, isDefault, isRenderProp, isStaticVariant, totalRenderCount }) => {
-          expect(time).toBe(20);
-          expect(displayName).toBe('ExampleComponentAsRenderProp');
+        render={({ state, props }) => {
+          const { time, displayName, variant, variants, staticVariantCount, isDefault, isRenderProp, isStaticVariant, totalRenderCount, renderVariantCount, totalVariantCount } = props;
+
           expect(variant).toBe(3);
+          expect(variants).toBeInstanceOf(Object);
+          expect(state).toBe(null);
+          expect(time).toBe(20);
+          expect(displayName).toBe('ExampleComponent');
           expect(staticVariantCount).toBe(3);
+          expect(renderVariantCount).toBe(1);
+          expect(totalVariantCount).toBe(4);
           expect(isDefault).toBe(false);
           expect(isRenderProp).toBe(true);
           expect(isStaticVariant).toBe(false);
           return <div></div>;
       }} />
+      <MyStatefulComponentWithRenderProps variant={0} time={time} />
+      <MyStatefulComponentWithRenderProps variant={1} time={time}
+        render={({ state, props }) => {
+          const { time, displayName, variant, variants, staticVariantCount, isDefault, isRenderProp, isStaticVariant, totalRenderCount, renderVariantCount, totalVariantCount } = props;
+          const { date } = state;
+
+          expect(date).toBe('5/2 4:20');
+
+          expect(variant).toBe(1);
+          expect(variants).toBeInstanceOf(Object);
+          expect(time).toBe(20);
+          expect(displayName).toBe('MyStatefulComponent');
+          expect(staticVariantCount).toBe(1);
+          expect(renderVariantCount).toBe(1);
+          expect(totalVariantCount).toBe(2);
+          expect(isDefault).toBe(false);
+          expect(isRenderProp).toBe(true);
+          expect(isStaticVariant).toBe(false);
+          return <div></div>;
+        }} />
     </div>
   );
 
@@ -56,26 +82,5 @@ test('WithVariants', () => {
   expect(ExampleComponent.variants[0]).toEqual(expect.any(Function));
   expect(ExampleComponent.variants[1]).toEqual(expect.any(Function));
   expect(ExampleComponent.variants[2]).toEqual(expect.any(Function));
-  expect(tree).toMatchSnapshot();
-});
-
-test('WithRenderProps', () => {
-  const component = renderer.create(
-    <div>
-      <MyStatefulComponentWithRenderProps variant={0} />
-      <MyStatefulComponentWithRenderProps variant={1} render={({props, state}) => {
-        // Preserve original comp state
-        expect(state.date).toBe('5/2 4:20');
-        expect(props.variant).toBe(1);
-        expect(props.renderVariantCount).toBe(2);
-        expect(props.isDefault).toBe(false);
-        expect(props.renderVariantCount).toBe(2);
-        expect(props.isRenderProp).toBe(true);
-        return <div></div>;
-      }}/>
-    </div>
-  );
-
-  const tree = component.toJSON();
   expect(tree).toMatchSnapshot();
 });

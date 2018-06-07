@@ -1,10 +1,6 @@
 # react-vary :cat: :smile_cat: :kissing_cat: :heart_eyes_cat: :joy_cat:
 
-## Statically and Dynamically declare variants for AB testing react components
-
-## 2 method API
-
-### WithVariants()
+Statically and Dynamically declare variants for AB testing react components
 
 Similar to the Top-level API of prop-types. Good for scenarios where you'd like to duplicate component logic to avoid pushing variant logic into the component.
 
@@ -38,7 +34,11 @@ class App extends React.Component {
         <MyCompWithVariants variant={1} />
         <MyCompWithVariants variant={2} />
 
-        {/* It also supports render props for dynamic tests */}
+        {/*
+          It also supports render props for dynamic tests
+          Here we get all the state updates of variant 0 but with a custom render override.
+          All without touching our original component!
+        */}
         <MyCompWithVariants variant={3} render={({ displayName, variant }) => {
             return <div>DisplayName: {displayName} Variant: {variant}</div>;
         }} />
@@ -53,84 +53,15 @@ By passing a component to `WithVariants` you get an HOC wrapper back that passes
 ```js
 /**
  * @param {...Object} props - The original user-defined Props will be passed through
+ * @param {...Object} state - Available for render-prop variants only, state updates from default variant
  * @param {Number} props.variant - The assigned variant number
  * @param {Object} props.variants - Reference to all known variants
  * @param {Boolean} props.isDefault - True if the variant is variant 0
  * @param {Boolean} props.isRenderProp - True if the variant is a render prop
  * @param {Boolean} props.isStaticVariant - True if the variant is a static variant
  * @param {Number} props.staticVariantCount - Total Count of all running static variants
- */
-```
-
-### WithRenderProps()
-
-This method also returns an HOC wrapper but is for scenarios where you'd like the default component to call it's render() function, but all other variants are components with render props that will override the default render() call. Useful for when you want to keep component state in the default variant while only changing the render abilities of your variants.
-
-```js
-import { WithRenderProps } from 'react-vary';
-
-class MyStatefulComponent extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      date: new Date()
-    }
-
-    this.interval = this.startTimer();
-  }
-
-  componentWillUnmount() {
-    clearInterval(this.interval);
-  }
-
-  startTimer() {
-    // update state.date every second and re-render
-    return setInterval(() => {
-      this.setState({
-        date: new Date();
-      });
-    }, 1000);
-  }
-
-  render() {
-    const { date } = this.state;
-    return <div>Original Render Date: {date}</div>
-  }
-}
-
-const MyStatefulComponentWithRenderProps = WithRenderProps(MyStatefulComponent);
-
-class App extends React.Component {
-  render() {
-    return (
-      <div>
-        {/* Variant 0 is our default Component defined above */}
-        <MyStatefulComponentWithRenderProps variant={0} />
-
-        {/*
-          Here we get all the state updates but with a custom render override.
-          All without touching our original component!
-        */}
-        <MyStatefulComponentWithRenderProps
-          variant={1}
-          render={({ props, state }) => <div>Date Override: {state.date}</div>}
-        />
-      </div>
-    );
-  }
-}
-```
-
-By passing a component to `WithRenderProps` you get an HOC wrapper back that passes data about your variants via props while automatically invoking state changes as if it were the default component. Each variant receives the following props.
-
-```js
-/**
- * @param {...Object} state - Current state that will change based on the behaviour of the default variant
- * @param {...Object} props - The original user-defined Props will be passed through
- * @param {Number} props.variant - The assigned variant number
- * @param {Number} props.renderVariantCount - Total Count of all running render variants
- * @param {Boolean} props.isDefault - True if the variant is variant 0
- * @param {Boolean} props.isRenderProp - True if the variant is a render prop
+ * @param {Number} props.renderVariantCount - Total Count of all running render prop variants
+ * @param {Number} props.totalVariantCount - Total Count of all running variants
  */
 ```
 
