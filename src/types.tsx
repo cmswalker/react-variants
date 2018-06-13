@@ -11,7 +11,7 @@ export type IVariants = {
 }
 
 export interface IVariantsProps {
-  variants: IVariants;
+  variants?: IVariants;
 }
 
 export interface IWithVariantProps {

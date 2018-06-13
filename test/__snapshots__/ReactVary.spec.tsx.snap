@@ -1,21 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`WithRenderProps 1`] = `
-<div>
-  <div
-    style={
-      Object {
-        "backgroundColor": "cornflowerblue",
-      }
-    }
-  >
-    Today's Date: 
-    5/2 4:20
-  </div>
-  <div />
-</div>
-`;
-
 exports[`WithVariants 1`] = `
 <div>
   <div
@@ -55,6 +39,17 @@ exports[`WithVariants 1`] = `
     ExampleComponent2
      Variant: 
     2
+  </div>
+  <div />
+  <div
+    style={
+      Object {
+        "backgroundColor": "cornflowerblue",
+      }
+    }
+  >
+    Today's Date: 
+    5/2 4:20
   </div>
   <div />
 </div>
